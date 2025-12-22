@@ -10,19 +10,19 @@ If you are unfamiliar with the material, it is recommended that you do not spend
 - Create an RDS Postgres DB instance.
 
 ### Step 3a: 
-- We will provide CSVs upon request in Mattermost. Look at the data and create a visual ERD and then implement and populate tables in postgres.
+- In our fictious simulation a very bad piece of software made it to prod. There was little to no data modeling before hand and the data is a mess! Look at the CSVs in the /data directory. Try to understand what is going on and create a visual ERD for what the data should be. Once you feel comfortable with needed changes, create tables and populate with data representing the CSVs in RDS postgres.
 
 ### Step 3b (Optional):
-- Choose a method to automate mock data generation and continuously populate the tables.
+- Choose a method to automate mock data generation and continuously populate the tables. If you have already spent more than 6 hours on the previous steps please skip this step.
 
 ### Step 4: 
 - Provision a Redshift Serverless instance.
 
 ### Step 5:
-- Use your preferred ETL method to populate Redshift with tables from Postgres.
+- Use your preferred ETL method to populate Redshift with data from Postgres.
 
 ### Step 6: (optional if you have time)
-- Continuously populate redshift with new data from postgres tables.
+- Ensure that redshift will pick up changes that happen on the postgres tables.
 - Create a BI visual that reads from Redshift and displays something interesting.
 
 _____________________________________________
