@@ -10,19 +10,20 @@ If you are unfamiliar with the material, it is recommended that you do not spend
 - Create an RDS Postgres DB instance.
 
 ### Step 3a: 
-- Populate a table called `customerdata`. We will provide a CSV upon request in Mattermost.
+- We will provide a CSV upon request in Mattermost. Look at the data and create a visual ERD and then implement and populate tables in postgres.
 
 ### Step 3b (Optional):
-- Choose a method to automate mock data generation and continuously populate the `customerdata` table.
+- Choose a method to automate mock data generation and continuously populate the tables.
 
 ### Step 4: 
 - Provision a Redshift Serverless instance.
 
 ### Step 5:
-- Use your preferred ETL method to populate Redshift with data from Postgres.
+- Use your preferred ETL method to populate Redshift with tables from Postgres.
 
 ### Step 6: (optional if you have time)
-- Create a visualization or chart that reads from Redshift.
+- Continuously populate redshift with new data from postgres tables.
+- Create a BI visual that reads from Redshift and displays something interesting.
 
 _____________________________________________
 
