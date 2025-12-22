@@ -10,7 +10,7 @@ If you are unfamiliar with the material, it is recommended that you do not spend
 - Create an RDS Postgres DB instance.
 
 ### Step 3a: 
-- We will provide a CSV upon request in Mattermost. Look at the data and create a visual ERD and then implement and populate tables in postgres.
+- We will provide CSVs upon request in Mattermost. Look at the data and create a visual ERD and then implement and populate tables in postgres.
 
 ### Step 3b (Optional):
 - Choose a method to automate mock data generation and continuously populate the tables.
@@ -31,7 +31,7 @@ _____________________________________________
 You can use your own AWS account or ours; it is your choice. If you want to use ours, please request that a user account be created for you, and make sure to tag all resources with creator: <Your Alias Name>.
 
 ## CI/CD (preferred if you have time)
-- Provide a CI/CD pipeline that can spin up and tear down the infrastructure easily.
+- Use CI/CD pipeline that can spin up and tear down the infrastructure easily.
 
 ## Finishing
-- You are not expected to finish all steps 1-6. This exercise may require tradeoffs in how you architect and execute the tasks. Terraform is preferred, but a perfect Terraform configuration may not be possible within the time limit.
+- Anything beyond 12 hours is on your own time and not expected. Be mindful of your time!, make reasonable tradeoffs, and communicate early/often. If you're spending extended time or hit blockers, please document issues as you go. Finishing everything is NOT strictly required. When in doubt communicate via Mattermost.
