@@ -28,7 +28,7 @@ If you are unfamiliar with the material, it is recommended that you do not spend
 _____________________________________________
 
 # **Important Notes:** 
-You can use your own AWS account or ours; it is your choice. If you want to use ours, please request that a user account be created for you, and make sure to tag all resources with creator: <Your Alias Name>.
+You can use your own AWS account or ours; it is your choice. If you want to use ours, please request that a user account be created for you, and make sure to tag all resources with _`creator: Your Name`_.
 
 ## CI/CD (preferred if you have time)
 - Use CI/CD pipeline that can spin up and tear down the infrastructure easily.
