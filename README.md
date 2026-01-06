@@ -5,6 +5,7 @@ If you are unfamiliar with the material, it is recommended that you do not spend
 # Task
 ### Step 1:
 - [x] Set up a GitHub or GitLab repo for your project. Use your repo for all code, config, scripts, and documents for the project. Send us the link to your repo via Mattermost. There is no need to fork this project.
+    - [You are here!](https://github.com/dylantadros/ZBD-Data-Candidate-Test.git)
 
 ### Step 2: 
 - [ ] Create an RDS Postgres DB instance.
