@@ -1,0 +1,12 @@
+# Terraform
+terraform-aws/.terraform
+#terraform-aws/variables.tf
+
+# Local env/config
+.env
+
+# IDE Configs
+.idea
+
+# Code Assistant
+AGENTS.md
