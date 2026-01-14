@@ -1,8 +1,14 @@
-# Terraform
-terraform-aws/.terraform
-#terraform-aws/variables.tf
+# local .terraform directories
+**/.terraform
 
-# Local env/config
+# terraform vars
+**/*.tfvars
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# env vars
 .env
 
 # IDE Configs

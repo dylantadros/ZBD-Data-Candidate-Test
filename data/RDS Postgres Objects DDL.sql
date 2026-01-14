@@ -19,7 +19,7 @@ create table if not exists publishers
 create table if not exists games
 (
     game_id           bigint generated always as identity primary key,
-    publisher_id      bigint not null references publishers (publisher_id) on delete cascade,
+    publisher_id      bigint not null references publishers (publisher_id) on delete restrict ,
     game_title        text   not null,
     game_release_date date,
     game_genre        text
@@ -37,7 +37,7 @@ create table if not exists customers
 create table if not exists transactions
 (
     transaction_id   bigint generated always as identity primary key,
-    customer_id      bigint      not null references customers (customer_id) on delete cascade,
+    customer_id      bigint      not null references customers (customer_id) on delete restrict ,
     transaction_type text        not null,
     currency         text        not null,
     placed_at        timestamptz not null
@@ -47,7 +47,7 @@ create table if not exists transactions
 create table if not exists line_items
 (
     line_item_id   bigint generated always as identity primary key,
-    transaction_id bigint         not null references transactions (transaction_id) on delete cascade,
+    transaction_id bigint         not null references transactions (transaction_id) on delete restrict ,
     game_id        bigint         not null references games (game_id) on delete restrict,
     game_platform  text,
     gross_amount   numeric(12, 2) not null,

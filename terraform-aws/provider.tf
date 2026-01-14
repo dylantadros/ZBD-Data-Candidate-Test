@@ -21,12 +21,12 @@ data "aws_subnets" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  name       = "${var.db_identifier}-subnet-group"
+  name       = "${var.pg_identifier}-subnet-group"
   subnet_ids = data.aws_subnets.default.ids
 }
 
 resource "aws_security_group" "db" {
-  name        = "${var.db_identifier}-sg"
+  name        = "${var.pg_identifier}-sg"
   description = "Allow Postgres access"
   vpc_id      = data.aws_vpc.default.id
 

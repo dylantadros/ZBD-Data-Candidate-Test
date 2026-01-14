@@ -17,7 +17,7 @@ select
     title::text as game_title,
     release_date::text as game_release_date,
     coalesce(try_strptime(release_date, '%m/%d/%Y'),
-    try(release_date::date)
+             try(release_date::date)
     )::date as game_release__date,
     genre::text as game_genre
 from game;
@@ -38,43 +38,43 @@ with transactions as (
  More date/time issues, removing tz as it's not always present
  Line item totals do not match transaction totals
  */
-select
-    transaction_id,
-    txn_type as transaction_type,
-    txn_ts as transaction_ts,
-    -- assumes UTC
-    coalesce(
-        try_strptime(txn_ts, '%Y-%m-%dT%H:%M:%SZ'),
-        try_strptime(txn_ts, '%Y-%m-%dT%H:%M:%S'),
-        try_strptime(txn_ts, '%Y/%m/%d %H:%M:%S'),
-        try_strptime(txn_ts, '%m-%d-%Y %H:%M'),
-        try_cast(txn_ts AS timestamp)
-    ) as transaction__ts,
-    currency,
-    total_amount::numeric(18,2) as transaction_total,
-    customer_ref
-from transaction),
+    select
+        transaction_id,
+        txn_type as transaction_type,
+        txn_ts as transaction_ts,
+        -- assumes UTC
+        coalesce(
+                try_strptime(txn_ts, '%Y-%m-%dT%H:%M:%SZ'),
+                try_strptime(txn_ts, '%Y-%m-%dT%H:%M:%S'),
+                try_strptime(txn_ts, '%Y/%m/%d %H:%M:%S'),
+                try_strptime(txn_ts, '%m-%d-%Y %H:%M'),
+                try_cast(txn_ts AS timestamp)
+        ) as transaction__ts,
+        currency,
+        total_amount::numeric(18,2) as transaction_total,
+        customer_ref
+    from transaction),
 
-transaction_details as (
+     transaction_details as (
 -- Transaction Details Table
 /*
  game, and pub have inconsistent types
  Line item totals do not match transaction totals
  */
-select
-    -- in practice would likely use hashing function
-    concat(transaction_id, '-', line_no) as transaction_detail_id,
-    transaction_id,
-    line_no,
-    game_ref, -- contains name and ID observations
-    publisher_ref, -- contains name and ID observations
-    region,
-    platform,
-    gross_amount::numeric(18,2) as gross_amount,
-    platform_fee::numeric(18,2) as platform_fee,
-    net_amount::numeric(18,2) as net_amount
-from transaction_detail
-order by transaction_id, line_no)
+         select
+             -- in practice would likely use hashing function
+             concat(transaction_id, '-', line_no) as transaction_detail_id,
+             transaction_id,
+             line_no,
+             game_ref, -- contains name and ID observations
+             publisher_ref, -- contains name and ID observations
+             region,
+             platform,
+             gross_amount::numeric(18,2) as gross_amount,
+             platform_fee::numeric(18,2) as platform_fee,
+             net_amount::numeric(18,2) as net_amount
+         from transaction_detail
+         order by transaction_id, line_no)
 
 select
     t.transaction_id,
@@ -82,6 +82,5 @@ select
     t.transaction_total as reported_total,
     calculated_total = reported_total as is_match
 from transaction_details td
-left join transactions t on td.transaction_id = t.transaction_id
+         left join transactions t on td.transaction_id = t.transaction_id
 group by t.transaction_id,t.transaction_total;
-
