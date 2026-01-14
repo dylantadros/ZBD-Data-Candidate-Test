@@ -1,0 +1,5 @@
+creator_name            = "Your Name"
+pg_username             = "postgres"
+pg_password             = "change_me"
+redshift_admin_username = "admin"
+redshift_admin_password = "change_me"
