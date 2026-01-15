@@ -1,6 +1,7 @@
 -- AI generated mock data to test RDS instance
 
 -- Publishers
+-- Batch 1
 insert into
     publishers (publisher_name, publisher_country)
 values
@@ -9,11 +10,25 @@ values
     ('Valve', 'United States'),
     ('CD Projekt', 'Poland');
 
+-- Batch 2
+insert into
+    publishers (publisher_name, publisher_country)
+values
+    ('Microsoft Game Studios', 'United States'),
+    ('Ubisoft', 'France');
+
+-- Batch 3
+insert into
+    publishers (publisher_name, publisher_country)
+values
+    ('Square Enix', 'Japan');
+
 select *
 from
     publishers;
 
 -- Games
+-- Batch 1
 insert into
     games (publisher_id, game_title, game_release_date, game_genre)
 select
@@ -33,11 +48,53 @@ from
         join publishers p
              on p.publisher_name = g.publisher_name;
 
+-- Batch 2
+insert into
+    games (publisher_id, game_title, game_release_date, game_genre)
+select
+    p.publisher_id,
+    g.game_title,
+    g.game_release_date,
+    g.game_genre
+from
+    (values
+         ('Microsoft Game Studios', 'Halo Infinite', date '2021-12-08', 'Shooter'),
+         ('Microsoft Game Studios', 'Forza Horizon 5', date '2021-11-09', 'Racing'),
+         ('Ubisoft', 'Assassin''s Creed Valhalla', date '2020-11-10', 'Action')) as g(
+                                                                                      publisher_name,
+                                                                                      game_title,
+                                                                                      game_release_date,
+                                                                                      game_genre
+        )
+        join publishers p
+             on p.publisher_name = g.publisher_name;
+
+-- Batch 3
+insert into
+    games (publisher_id, game_title, game_release_date, game_genre)
+select
+    p.publisher_id,
+    g.game_title,
+    g.game_release_date,
+    g.game_genre
+from
+    (values
+         ('Square Enix', 'Final Fantasy XVI', date '2023-06-22', 'RPG'),
+         ('Square Enix', 'Octopath Traveler II', date '2023-02-24', 'RPG')) as g(
+                                                                                 publisher_name,
+                                                                                 game_title,
+                                                                                 game_release_date,
+                                                                                 game_genre
+        )
+        join publishers p
+             on p.publisher_name = g.publisher_name;
+
 select *
 from
     games;
 
 -- customers
+-- Batch 1
 insert into
     customers (name, email)
 values
@@ -46,11 +103,32 @@ values
     ('Mia Chen', 'mia.chen@example.com'),
     ('Ethan Rivera', 'ethan.rivera@example.com');
 
+-- Batch 2
+insert into
+    customers (name, email)
+values
+    ('Liam Brooks', 'liam.brooks@example.com'),
+    ('Sophia Martinez', 'sophia.martinez@example.com'),
+    ('Jackson Lee', 'jackson.lee@example.com');
+
+update customers
+    set name = 'Jackson Five'
+    where customer_id = 7;
+
+-- Batch 3
+insert into
+    customers (name, email)
+values
+    ('Olivia Grant', 'olivia.grant@example.com'),
+    ('Mason Wright', 'mason.wright@example.com'),
+    ('Amelia Park', 'amelia.park@example.com');
+
 select *
 from
     customers;
 
 -- Transactions
+-- Batch 1
 insert into
     transactions (customer_id, transaction_type, currency, placed_at)
 select
@@ -70,11 +148,54 @@ from
         join customers c
              on c.email = t.customer_email;
 
+-- Batch 2
+insert into
+    transactions (customer_id, transaction_type, currency, placed_at)
+select
+    c.customer_id,
+    t.transaction_type,
+    t.currency,
+    t.placed_at
+from
+    (values
+         ('liam.brooks@example.com', 'purchase', 'USD', timestamptz '2025-01-12T09:30:00Z'),
+         ('sophia.martinez@example.com', 'purchase', 'EUR', timestamptz '2025-01-13T16:45:20Z'),
+         ('jackson.lee@example.com', 'purchase', 'USD', timestamptz '2025-01-14T02:15:05Z')) as t(
+                                                                                                  customer_email,
+                                                                                                  transaction_type,
+                                                                                                  currency,
+                                                                                                  placed_at
+        )
+        join customers c
+             on c.email = t.customer_email;
+
+-- Batch 3
+insert into
+    transactions (customer_id, transaction_type, currency, placed_at)
+select
+    c.customer_id,
+    t.transaction_type,
+    t.currency,
+    t.placed_at
+from
+    (values
+         ('olivia.grant@example.com', 'purchase', 'USD', timestamptz '2025-01-15T13:05:40Z'),
+         ('mason.wright@example.com', 'purchase', 'USD', timestamptz '2025-01-16T19:22:10Z'),
+         ('amelia.park@example.com', 'purchase', 'EUR', timestamptz '2025-01-17T08:10:55Z')) as t(
+                                                                                                  customer_email,
+                                                                                                  transaction_type,
+                                                                                                  currency,
+                                                                                                  placed_at
+        )
+        join customers c
+             on c.email = t.customer_email;
+
 select *
 from
     transactions;
 
 -- line items
+-- Batch 1
 insert into
     line_items (transaction_id,
                 game_id,
@@ -115,6 +236,92 @@ from
                        game_platform,
                        gross_amount,
                        platform_fee
+        )
+        join customers c
+             on c.email = li.customer_email
+        join transactions tr
+             on tr.customer_id = c.customer_id
+                 and tr.placed_at = li.placed_at::timestamptz
+                 and tr.transaction_type = li.transaction_type
+        join publishers p
+             on p.publisher_name = li.publisher_name
+        join games g
+             on g.publisher_id = p.publisher_id
+                 and g.game_title = li.game_title;
+
+-- Batch 2
+insert into
+    line_items (transaction_id,
+                game_id,
+                game_platform,
+                gross_amount,
+                platform_fee)
+select
+    tr.transaction_id,
+    g.game_id,
+    li.game_platform,
+    li.gross_amount,
+    li.platform_fee
+from
+    (values
+         ('liam.brooks@example.com', '2025-01-12T09:30:00Z', 'purchase', 'Microsoft Game Studios', 'Halo Infinite',
+          'Xbox Series X', 59.99, 9.00),
+         ('sophia.martinez@example.com', '2025-01-13T16:45:20Z', 'purchase', 'Ubisoft',
+          'Assassin''s Creed Valhalla', 'PS5', 39.99, 6.00),
+         ('jackson.lee@example.com', '2025-01-14T02:15:05Z', 'purchase', 'Microsoft Game Studios',
+          'Forza Horizon 5', 'Xbox Series X', 49.99, 7.50)) as li(
+                                                                  customer_email,
+                                                                  placed_at,
+                                                                  transaction_type,
+                                                                  publisher_name,
+                                                                  game_title,
+                                                                  game_platform,
+                                                                  gross_amount,
+                                                                  platform_fee
+        )
+        join customers c
+             on c.email = li.customer_email
+        join transactions tr
+             on tr.customer_id = c.customer_id
+                 and tr.placed_at = li.placed_at::timestamptz
+                 and tr.transaction_type = li.transaction_type
+        join publishers p
+             on p.publisher_name = li.publisher_name
+        join games g
+             on g.publisher_id = p.publisher_id
+                 and g.game_title = li.game_title;
+
+-- Batch 3
+insert into
+    line_items (transaction_id,
+                game_id,
+                game_platform,
+                gross_amount,
+                platform_fee)
+select
+    tr.transaction_id,
+    g.game_id,
+    li.game_platform,
+    li.gross_amount,
+    li.platform_fee
+from
+    (values
+         ('olivia.grant@example.com', '2025-01-15T13:05:40Z', 'purchase', 'Square Enix', 'Final Fantasy XVI', 'PS5',
+          69.99, 10.50),
+         ('mason.wright@example.com', '2025-01-16T19:22:10Z', 'purchase', 'Nintendo', 'Mario Kart 8 Deluxe', 'Switch',
+          49.99, 7.50),
+         ('amelia.park@example.com', '2025-01-17T08:10:55Z', 'purchase', 'Square Enix', 'Final Fantasy XVI', 'PS5',
+          69.99, 10.50),
+         ('amelia.park@example.com', '2025-01-17T08:10:55Z', 'purchase', 'Square Enix', 'Octopath Traveler II',
+          'Switch', 59.99, 9.00)) as li(
+                                        customer_email,
+                                        placed_at,
+                                        transaction_type,
+                                        publisher_name,
+                                        game_title,
+                                        game_platform,
+                                        gross_amount,
+                                        platform_fee
         )
         join customers c
              on c.email = li.customer_email
@@ -190,14 +397,22 @@ ORDER BY
 
 -- LTV
 SELECT
-  c.customer_id,
-  c.name,
-  c.email,
-  COUNT(DISTINCT t.transaction_id) AS transactions,
-  SUM(li.gross_amount)             AS gross_amount,
-  SUM(li.net_amount)               AS net_amount
-FROM customers c
-JOIN transactions t ON t.customer_id = c.customer_id
-JOIN line_items li  ON li.transaction_id = t.transaction_id
-GROUP BY 1,2,3
-ORDER BY net_amount DESC;
+    c.customer_id,
+    c.name,
+    c.email,
+    COUNT(DISTINCT t.transaction_id) AS transactions,
+    SUM(li.gross_amount) AS gross_amount,
+    SUM(li.net_amount) AS net_amount
+FROM
+    customers c
+        JOIN transactions t ON t.customer_id = c.customer_id
+        JOIN line_items li ON li.transaction_id = t.transaction_id
+GROUP BY
+    1, 2, 3
+ORDER BY
+    net_amount DESC;
+
+SELECT *
+FROM pg_replication_slots
+ORDER BY slot_name;
+
